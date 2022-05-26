@@ -1,0 +1,38 @@
+#ifndef __KRUSKAL__
+#define __KRUSKAL__
+#include <vector>
+#include <algorithm>
+#include "DSU.hpp"
+#include "Edge.hpp"
+using namespace std;
+
+vector<Edge> kruskal(vector<pair<int, float>> adj[], int n)
+{                                      // Kruskal’s MST algorithm
+    DSU A(n);                          // Equivalence class array // Create heap - O(E)
+    vector<Edge> edge_list, mst_edges; // Create
+    for (int u = 0; u < n; u++)        // Put the edges on the array
+    {
+        for (pair<int, float> i : adj[u])
+        {
+            int v = i.first;
+            float w = i.second;
+            edge_list.push_back(Edge(u, v, w));
+        }
+    }
+    sort(edge_list.begin(), edge_list.end());
+    // Our goal is to select V-1 edges
+    for (Edge e : edge_list)
+    { // Combine equiv classes
+        Edge temp;
+        int u = e.from;
+        int v = e.to;
+        float w = e.weight;
+        if (A.differ(u, v))
+        {
+            A.unite(u, v); // Combine equiv sets
+            mst_edges.push_back(Edge(u, v, w));
+        }
+    }
+    return mst_edges;
+}
+#endif
