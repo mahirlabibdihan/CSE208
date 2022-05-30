@@ -1,9 +1,9 @@
 #include "Prim.hpp"
 #include "Kruskal.hpp"
 
-int getCost(vector<Edge> mst)
+float getCost(vector<Edge> mst)
 {
-    int cost = 0;
+    float cost = 0;
     for (Edge e : mst)
     {
         cost += e.weight;
@@ -53,3 +53,19 @@ int main()
     cout << "List of edges selected by Kruskal's: ";
     printMst(mstK);
 }
+/*
+7 13
+0 1 14
+0 2 21
+0 3 5
+0 5 7
+1 6 19
+1 5 2
+1 2 15
+2 4 4
+2 6 3
+3 4 22
+4 5 15
+5 6 18
+6 4 2
+*/

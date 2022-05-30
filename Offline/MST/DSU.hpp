@@ -1,22 +1,24 @@
 #ifndef __DSU__
 #define __DSU__
+#include <vector>
+using namespace std;
 class DSU
 {
 private:
-    vector<int> parent;      // Node array
-    int find(int curr) const // Find root
+    vector<int> parent; // Node array
+    int find(int v)     // Find root
     {
-        while (parent[curr] != -1)
-            curr = parent[curr];
-        return curr; // At root
+        if (parent[v] == -1)
+            return v;
+        return parent[v] = find(parent[v]); // At root
     }
 
 public:
     DSU(int n) : parent(n, -1) {} // Constructor
     void unite(int u, int v)      // Merge equivalences
     {
-        int s1 = find(u);
-        int s2 = find(v);
+        int s1 = find(u); // O(n)
+        int s2 = find(v); // O(n)
         if (s1 != s2)
         {
             parent[s2] = s1;

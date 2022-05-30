@@ -13,12 +13,13 @@ vector<Edge> prim(vector<pair<int, float>> adj[], int n, int start)
     vector<int> parent(n, -1); // parent[I] stores I’s closest neighbor
     vector<float> edge_weight(n, INT_MAX);
     vector<bool> visited(n, false);
-    priority_queue<pair<float, int>> pq; // Create heap - O(E)
+    priority_queue<pair<float, int>> pq;
     edge_weight[start] = 0;
-    pq.push({0, start}); // O(log(E))
+    pq.push({0, start});
     vector<Edge> mst_edges;
-    // There will be 2|E| push in pq and 2|E| pop in pq.
+    // There can be |E| push in pq and |E| pop in pq.
     // Each push/pop needs log|E| time
+    // Time complexity: O(ElogE)
 
     // Our goal is to select n nodes with minimum edges
     for (int i = 0; i < n; i++) // O(V)
@@ -52,7 +53,7 @@ vector<Edge> prim(vector<pair<int, float>> adj[], int n, int start)
             {                       // Update edgeWeight
                 edge_weight[v] = w;
                 parent[v] = u;                 // Update who it came from
-                pq.push({-edge_weight[v], v}); // Insert new distance in heap
+                pq.push({-edge_weight[v], v}); // Insert new distance in heap // O(logE)
             }
         }
     }
