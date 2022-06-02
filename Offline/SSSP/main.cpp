@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include "Djikstra.hpp"
+#include "BellmanFord.hpp"
 using namespace std;
 // For undirected graph
 void printPath(int u, vector<int> &parent)
@@ -27,17 +28,27 @@ int main()
     cin >> s >> d;
     vector<int> dist(n, INT_MAX);
     vector<int> parent(n, -1);
-    dijkstra(adj, n, s, dist, parent);
+
+    // Task-1
+    // dijkstra(adj, n, s, dist, parent);
+
+    // Task-2
+    if (!bellmanFord(adj, n, s, dist, parent))
+    {
+        cout << "The graph contains a negative cycle" << endl;
+        return EXIT_FAILURE;
+    }
+    cout << "The graph does not contain a negative cycle" << endl;
+    //
+
     if (parent[d] == -1)
     {
         cout << "Destination not reachable" << endl;
+        return EXIT_FAILURE;
     }
-    else
-    {
-        cout << "Shortest path cost: " << dist[d] << endl;
-        printPath(parent[d], parent);
-        cout << d << endl;
-    }
+    cout << "Shortest path cost: " << dist[d] << endl;
+    printPath(parent[d], parent);
+    cout << d << endl;
 
     return EXIT_SUCCESS;
 }
