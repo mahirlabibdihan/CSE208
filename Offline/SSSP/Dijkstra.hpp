@@ -12,6 +12,7 @@ void dijkstra(vector<pair<int, int>> adj[], int n, int source, vector<int> &dist
     pq.push({-dist[source], source});
 
     // Initialize heap array
+    // O(ElogV)
     for (int i = 0; i < n; i++)
     { // Now, get distances
         pair<int, int> temp;
@@ -26,7 +27,7 @@ void dijkstra(vector<pair<int, int>> adj[], int n, int source, vector<int> &dist
             temp = pq.top();
             u = temp.second;
             w = -temp.first;
-            pq.pop();
+            pq.pop(); // O(logE)
         } while (visited[u]);
         visited[u] = true;
 
@@ -34,7 +35,7 @@ void dijkstra(vector<pair<int, int>> adj[], int n, int source, vector<int> &dist
         {
             int v = i.first;
             float w = i.second;
-            if (!visited[v] && dist[v] > dist[u] + w) // If any vertex is already visited than this condition will always be false for that vertex. So we don't need to check that explicitly
+            if (!visited[v] && dist[v] > dist[u] + w)
             {
                 dist[v] = dist[u] + w;  // Update distance
                 parent[v] = u;          // Update who it came from

@@ -7,6 +7,7 @@ using namespace std;
 bool bellmanFord(vector<pair<int, int>> adj[], int n, int source, vector<int> &dist, vector<int> &parent)
 {
     vector<Edge> edges;
+    // O(E)
     for (int u = 0; u < n; u++) // Put the edges on the array
     {
         for (pair<int, int> i : adj[u])
@@ -18,6 +19,7 @@ bool bellmanFord(vector<pair<int, int>> adj[], int n, int source, vector<int> &d
     }
     dist[source] = 0;
     parent[source] = -1;
+    // O(VE)
     for (int i = 1; i <= n; i++)
     {
         for (Edge e : edges)
