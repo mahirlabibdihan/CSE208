@@ -3,7 +3,7 @@
 #include <climits>
 using namespace std;
 
-void dijkstra(vector<pair<int, int>> adj[], const int &n, const int &start, vector<int> &dist, vector<int> &parent)
+void dijkstra(vector<pair<int, int>> adj[], int n, int start, vector<int> &dist, vector<int> &parent)
 {
     vector<bool> visited(n, false);
     priority_queue<pair<int, int>> pq;
