@@ -17,8 +17,8 @@ public:
     DSU(int n) : parent(n, -1) {} // Constructor
     void unite(int u, int v)      // Merge equivalences
     {
-        int s1 = find(u); // O(n)
-        int s2 = find(v); // O(n)
+        int s1 = find(u); // O(logn)
+        int s2 = find(v); // O(logn)
         if (s1 != s2)
         {
             parent[s2] = s1;
