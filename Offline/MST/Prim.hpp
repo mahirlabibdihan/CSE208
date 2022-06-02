@@ -49,8 +49,8 @@ vector<Edge> prim(vector<pair<int, float>> adj[], int n, int start)
         {
             int v = i.first;
             float w = i.second;
-            if (edge_weight[v] > w) // If any vertex is already visited than this condition will always be false for that vertex. So we don't need to check that explicitly
-            {                       // Update edgeWeight
+            if (!visited[v] && edge_weight[v] > w)
+            { // Update edgeWeight
                 edge_weight[v] = w;
                 parent[v] = u;                 // Update who it came from
                 pq.push({-edge_weight[v], v}); // Insert new distance in heap // O(logE)
