@@ -18,7 +18,7 @@ bool bellmanFord(vector<pair<int, int>> adj[], int n, int source, vector<int> &d
     }
     dist[source] = 0;
     parent[source] = -1;
-    for (int i = 0; i < n - 1; i++)
+    for (int i = 1; i <= n; i++)
     {
         for (Edge e : edges)
         {
@@ -27,19 +27,13 @@ bool bellmanFord(vector<pair<int, int>> adj[], int n, int source, vector<int> &d
             int w = e.weight;
             if (dist[u] != INT_MAX && dist[u] + w < dist[v])
             {
+                if (i == n)
+                {
+                    return false; // Negative cycle
+                }
                 dist[v] = dist[u] + w;
                 parent[v] = u;
             }
-        }
-    }
-    for (Edge e : edges)
-    {
-        int u = e.from;
-        int v = e.to;
-        int w = e.weight;
-        if (dist[u] != INT_MAX && dist[u] + w < dist[v])
-        {
-            return false;
         }
     }
     return true;
