@@ -27,7 +27,7 @@ void dijkstra(vector<pair<int, int>> adj[], int n, int source, vector<int> &dist
             temp = pq.top();
             u = temp.second;
             w = -temp.first;
-            pq.pop(); // O(logE)
+            pq.pop(); // O(logV)
         } while (visited[u]);
         visited[u] = true;
 
@@ -39,7 +39,7 @@ void dijkstra(vector<pair<int, int>> adj[], int n, int source, vector<int> &dist
             {
                 dist[v] = dist[u] + w;  // Update distance
                 parent[v] = u;          // Update who it came from
-                pq.push({-dist[v], v}); // Insert new distance in heap // O(logE)
+                pq.push({-dist[v], v}); // Insert new distance in heap // O(logV)
             }
         }
     }
