@@ -30,7 +30,6 @@ vector<Edge> kruskal(vector<pair<int, float>> adj[], int n)
     // O(ElogV)
     for (Edge e : edge_list)
     { // Combine equiv classes
-        Edge temp;
         int u = e.from;
         int v = e.to;
         float w = e.weight;
