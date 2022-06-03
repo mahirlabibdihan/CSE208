@@ -31,10 +31,10 @@ void dijkstra(vector<pair<int, int>> adj[], int n, int source, vector<int> &dist
         } while (visited[u]);
         visited[u] = true;
 
-        for (pair<int, float> i : adj[u]) // Sum of length of all adjacency list is 2|E|
+        for (pair<int, int> i : adj[u]) // Sum of length of all adjacency list is 2|E|
         {
             int v = i.first;
-            float w = i.second;
+            int w = i.second;
 
             // RELAX
             if (!visited[v] && dist[v] > dist[u] + w)
