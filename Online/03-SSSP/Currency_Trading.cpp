@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
 #include "Dijkstra.hpp"
 #include "BellmanFord.hpp"
 using namespace std;
@@ -23,7 +24,7 @@ int main()
         int u, v;
         float w;
         cin >> u >> v >> w;
-        adj[u].push_back({v, w});
+        adj[u].push_back({v, log(1 / w)});
     }
     int s, d;
     cin >> s >> d;
@@ -40,14 +41,13 @@ int main()
         return EXIT_FAILURE;
     }
     cout << "The graph does not contain a negative cycle" << endl;
-    //
-
     if (parent[d] == -1)
     {
         cerr << "Destination not reachable" << endl;
         return EXIT_FAILURE;
     }
-    cout << "Shortest path cost: " << dist[d] << endl;
+
+    cout << "Shortest path cost: " << 1 / exp(dist[d]) << endl;
     printPath(parent[d], parent);
     cout << d << endl;
 

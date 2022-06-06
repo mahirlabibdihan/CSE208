@@ -1,40 +1,31 @@
 #include <vector>
 #include <queue>
 #include <climits>
-#include "Edge.hpp"
 using namespace std;
 
-bool bellmanFord(vector<pair<int, int>> adj[], int n, int source, vector<int> &dist, vector<int> &parent)
+bool bellmanFord(vector<pair<int, float>> adj[], int n, int source, vector<float> &dist, vector<int> &parent)
 {
-    vector<Edge> edges;
-    // O(E)
-    for (int u = 0; u < n; u++) // Put the edges on the array
-    {
-        for (pair<int, int> i : adj[u])
-        {
-            int v = i.first;
-            int w = i.second;
-            edges.push_back(Edge(u, v, w));
-        }
-    }
     dist[source] = 0;
     parent[source] = -1;
     // O(VE)
     for (int i = 1; i <= n; i++)
     {
-        for (Edge e : edges)
+        // Relax all edges
+        for (int u = 0; u < n; u++)
         {
-            int u = e.from;
-            int v = e.to;
-            int w = e.weight;
-            if (dist[u] != INT_MAX && dist[u] + w < dist[v])
+            for (pair<int, float> e : adj[u])
             {
-                if (i == n)
+                int v = e.first;
+                float w = e.second;
+                if (dist[u] != INT_MAX && dist[u] + w < dist[v])
                 {
-                    return false; // Negative cycle
+                    if (i == n)
+                    {
+                        return false; // Negative cycle
+                    }
+                    dist[v] = dist[u] + w;
+                    parent[v] = u;
                 }
-                dist[v] = dist[u] + w;
-                parent[v] = u;
             }
         }
     }

@@ -3,10 +3,10 @@
 #include <climits>
 using namespace std;
 
-void dijkstra(vector<pair<int, int>> adj[], int n, int source, vector<int> &dist, vector<int> &parent)
+void dijkstra(vector<pair<int, float>> adj[], int n, int source, vector<float> &dist, vector<int> &parent)
 {
     vector<bool> visited(n, false);
-    priority_queue<pair<int, int>> pq;
+    priority_queue<pair<float, int>> pq;
     dist[source] = 0;
     parent[source] = -1;
     pq.push({-dist[source], source});
@@ -15,8 +15,8 @@ void dijkstra(vector<pair<int, int>> adj[], int n, int source, vector<int> &dist
     // O(ElogV)
     for (int i = 0; i < n; i++)
     { // Now, get distances
-        pair<int, int> temp;
-        int u, w;
+        pair<int, float> temp;
+        int u;
         do
         {
             if (pq.empty())
@@ -26,7 +26,6 @@ void dijkstra(vector<pair<int, int>> adj[], int n, int source, vector<int> &dist
             }
             temp = pq.top();
             u = temp.second;
-            w = -temp.first;
             pq.pop(); // O(logV)
         } while (visited[u]);
         visited[u] = true;
@@ -35,6 +34,8 @@ void dijkstra(vector<pair<int, int>> adj[], int n, int source, vector<int> &dist
         {
             int v = i.first;
             float w = i.second;
+
+            // RELAX
             if (!visited[v] && dist[v] > dist[u] + w)
             {
                 dist[v] = dist[u] + w;  // Update distance
