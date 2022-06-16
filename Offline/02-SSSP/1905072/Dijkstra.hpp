@@ -3,12 +3,17 @@
 #include <climits>
 using namespace std;
 
+
 void dijkstra(vector<pair<int, float>> adj[], int n, int source, vector<float> &dist, vector<int> &parent)
 {
     vector<bool> visited(n, false);
     priority_queue<pair<float, int>> pq;
+    for (int i = 0; i < n; i++)
+    {
+        dist[i] = INT_MAX;
+        parent[i] = -1;
+    }
     dist[source] = 0;
-    parent[source] = -1;
     pq.push({-dist[source], source});
 
     // Initialize heap array

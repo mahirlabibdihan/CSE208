@@ -32,15 +32,15 @@ int main()
     vector<int> parent(n, -1);
 
     // Task-1
-    dijkstra(adj, n, s, dist, parent);
+    // dijkstra(adj, n, s, dist, parent);
 
     // Task-2
-    // if (!bellmanFord(adj, n, s, dist, parent))
-    // {
-    //     cerr << "The graph contains a negative cycle" << endl;
-    //     return EXIT_FAILURE;
-    // }
-    // cout << "The graph does not contain a negative cycle" << endl;
+    if (!bellmanFord(adj, n, s, dist, parent))
+    {
+        cerr << "The graph contains a negative cycle" << endl;
+        return EXIT_FAILURE;
+    }
+    cout << "The graph does not contain a negative cycle" << endl;
     //
 
     if (parent[d] == -1)
