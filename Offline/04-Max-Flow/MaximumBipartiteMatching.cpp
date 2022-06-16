@@ -9,8 +9,8 @@ using namespace std;
 int maxBPM(vector<vector<bool>> bpGraph, int n, int m)
 {
     int V = n + m + 2;
-    int s = n + m;
-    int t = n + m + 1;
+    int s = V - 2;
+    int t = V - 1;
     vector<pair<int, int>> adj[V];
     for (int u = 0; u < n; u++)
     {
@@ -31,22 +31,4 @@ int maxBPM(vector<vector<bool>> bpGraph, int n, int m)
         adj[n + u].push_back({t, 1});
     }
     return fordFulkerson(adj, V, s, t);
-}
-
-// Driver Code
-int main()
-{
-    // Let us create a bpGraph
-    // shown in the above example
-    int n = 6, m = 6;
-    vector<vector<bool>> bpGraph = {{0, 1, 1, 0, 0, 0},
-                                    {1, 0, 0, 1, 0, 0},
-                                    {0, 0, 1, 0, 0, 0},
-                                    {0, 0, 1, 1, 0, 0},
-                                    {0, 0, 0, 0, 0, 0},
-                                    {0, 0, 0, 0, 0, 1}};
-
-    cout << "Maximum number of applicants that can get job is " << maxBPM(bpGraph, n, m);
-
-    return 0;
 }
