@@ -21,7 +21,7 @@ void printNames(vector<string> names, int n)
     }
 }
 
-void printElimination(vector<string> name, vector<int> w, vector<int> r, vector<bool> reachable, int x, int n)
+void printElimination(vector<string> name, vector<int> w, vector<int> r, vector<bool> reachable, int x, int n, vector<vector<int>> g)
 {
     int nWins = 0, nLeft = 0, nTeam = 0;
     vector<string> names;
@@ -30,9 +30,15 @@ void printElimination(vector<string> name, vector<int> w, vector<int> r, vector<
         if (reachable[i])
         {
             nWins += w[i];
-            nLeft += r[i];
             nTeam += 1;
             names.push_back(name[i]);
+            for (int j = i + 1; j < n; j++)
+            {
+                if (reachable[j])
+                {
+                    nLeft += g[i][j];
+                }
+            }
         }
     }
     cout << name[x] << " is eliminated." << endl;
@@ -43,46 +49,43 @@ void printElimination(vector<string> name, vector<int> w, vector<int> r, vector<
     cout << "So on average, each of the teams wins " << (nWins + nLeft) << "/" << nTeam << " = " << (1.0 * (nWins + nLeft) / nTeam) << " games." << endl
          << endl;
 }
-void check(vector<pair<int, int>> adj[], vector<string> name, vector<int> w, vector<int> r, int x, int n, int max_flow)
-{
-    int V = 2 + (n * (n - 1) / 2) + n;
-    int s = V - 2;
-    int t = V - 1;
-
-    // Teams to sink
-    for (int i = 0; i < n; i++)
-    {
-        adj[i].push_back({t, w[x] + r[x] - w[i]});
-    }
-    // Checking if it is possible to play all games and x not getting eliminated
-    vector<bool> reachable(V);
-    int flow = fordFulkerson(adj, V, s, t, reachable);
-    if (flow < max_flow)
-    {
-        printElimination(name, w, r, reachable, x, n);
-    }
-}
 void solve(vector<string> name, vector<int> w, vector<int> r, vector<vector<int>> g, int n)
 {
-    int V = 2 + (n * (n - 1) / 2) + n;
-    int s = V - 2;
-    int t = V - 1;
+    int n_games = (n * (n - 1) / 2);
+    int V = 2 + n_games + n; // Total nodes
+    int s = V - 2;           // Source node
+    int t = V - 1;           // Sink node
     vector<pair<int, int>> adj[V];
     int max_flow = 0;
     // Create graph
-    for (int i = 0, c = n; i < n; i++)
+    // 0 to n-1: Teams node
+    // n to n + n_games - 1: Games node
+    for (int i = 0, node_id = n; i < n; i++)
     {
-        for (int j = i + 1; j < n; j++, c++)
+        for (int j = i + 1; j < n; j++, node_id++)
         {
-            adj[s].push_back({c, g[i][j]});
-            adj[c].push_back({i, INT_MAX});
-            adj[c].push_back({j, INT_MAX});
+            adj[s].push_back({node_id, g[i][j]});
+            adj[node_id].push_back({i, INT_MAX});
+            adj[node_id].push_back({j, INT_MAX});
             max_flow += g[i][j];
         }
     }
+    for (int i = 0; i < n; i++)
+    {
+        adj[i].push_back({t, 0});
+    }
     for (int x = 0; x < n; x++)
     {
-        check(adj, name, w, r, x, n, max_flow);
+        for (int i = 0; i < n; i++)
+        {
+            adj[i][0].second = w[x] + r[x] - w[i];
+        }
+        vector<bool> reachable(V);
+        int flow = fordFulkerson(adj, V, s, t, reachable);
+        if (flow < max_flow)
+        {
+            printElimination(name, w, r, reachable, x, n, g);
+        }
     }
 }
 
