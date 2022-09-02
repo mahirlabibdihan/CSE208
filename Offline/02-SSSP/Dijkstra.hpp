@@ -3,7 +3,6 @@
 #include <climits>
 using namespace std;
 
-
 void dijkstra(vector<pair<int, float>> adj[], int n, int source, vector<float> &dist, vector<int> &parent)
 {
     vector<bool> visited(n, false);
@@ -34,7 +33,6 @@ void dijkstra(vector<pair<int, float>> adj[], int n, int source, vector<float> &
             pq.pop(); // O(logV)
         } while (visited[u]);
         visited[u] = true;
-
         for (pair<int, float> i : adj[u]) // Sum of length of all adjacency list is 2|E|
         {
             int v = i.first;

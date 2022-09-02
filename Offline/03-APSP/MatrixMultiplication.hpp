@@ -34,7 +34,8 @@ void matrixMultiplication(vector<pair<int, float>> adj[], int n, vector<vector<f
     dist = L;
 }
 
-/*void matrixMultiplicationFaster(vector<pair<int, float>> adj[], int n, vector<vector<float>> &dist, vector<vector<int>> &parent)
+// Not same output for negative edges as matrixMultiplication
+void matrixMultiplicationFaster(vector<pair<int, float>> adj[], int n, vector<vector<float>> &dist, vector<vector<int>> &parent)
 {
     init(adj, n, dist, parent); // Initialize weight matrix
 
@@ -42,4 +43,4 @@ void matrixMultiplication(vector<pair<int, float>> adj[], int n, vector<vector<f
     {
         dist = extendShortestPaths(dist, dist, parent, n);
     }
-}*/
+}

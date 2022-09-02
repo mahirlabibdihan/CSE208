@@ -14,7 +14,7 @@ using namespace std;
       Now we will simulate matches between all the teams in X's division (except X). And try to find if it is possible for X to win the division for a particular results of all the matches.
 
       X can win at most w[x]+r[x] matches. So no other team in X's division should win more than w[x]+r[x]. So we will limit i-th teams maximum number of wins to w[x]+r[x]-w[i]. If this is possible to finish all the remaining games under this condition, then X is not eliminated yet. Otherwise X is eliminated.
-       */
+*/
 
 void printNames(vector<string> names, int n)
 {
@@ -84,8 +84,8 @@ void solve(vector<string> name, vector<int> w, vector<int> r, vector<vector<int>
             continue;
         }
 
+        // Building for edmond-karp
         vector<pair<int, int>> adj[V];
-
         for (int i = 0; i < n; i++)
         {
             if (i != x)
@@ -110,6 +110,8 @@ void solve(vector<string> name, vector<int> w, vector<int> r, vector<vector<int>
         }
 
         int flow = fordFulkerson(adj, V, s, t, reachable);
+
+        // No trivial check
         if (flow < max_flow)
         {
             printElimination(name, w, r, reachable, x, n, g);
@@ -148,4 +150,9 @@ Baltimore 71 63 28 3 0 2 7 4
 Boston 69 66 27 8 2 0 0 0
 Toronto 63 72 27 7 7 0 0 0
 Detroit 49 86 27 3 4 0 0 0
+
+Corner:
+2
+A 5 4 0 0 0
+B 4 4 0 0 0
 */

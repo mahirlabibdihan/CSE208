@@ -410,3 +410,143 @@ int main()
         }
     }
 }
+
+int64_t bfs(vector<int> adj[], int n, vector<vector<int64_t>> capacity, int s, int t, vector<int> &parent)
+{
+    fill(parent.begin(), parent.end(), -1);
+    queue<pair<int, int64_t>> q;
+    q.push({s, LLONG_MAX});
+    while (!q.empty())
+    {
+        auto [u, flow] = q.front();
+        q.pop();
+        for (int v : adj[u])
+        {
+            if (v != s && parent[v] == -1 && capacity[u][v] > 0)
+            {
+                parent[v] = u;
+                int64_t new_flow = min(flow, capacity[u][v]);
+                if (v == t)
+                {
+                    return new_flow;
+                }
+                q.push({v, new_flow});
+            }
+        }
+    }
+    return 0;
+}
+
+int64_t fordFulkerson(vector<pair<int, int64_t>> adj[], int n, int s, int t)
+{
+    vector<vector<int64_t>> capacity(n, vector<int64_t>(n, 0));
+    // O(E)
+    for (int u = 0; u < n; u++)
+    {
+        for (auto [v, w] : adj[u])
+        {
+            capacity[u][v] = w;
+        }
+    }
+
+    vector<int> new_adj[n];
+    // O(E)
+    for (int u = 0; u < n; u++)
+    {
+        for (auto [v, w] : adj[u])
+        {
+            new_adj[u].push_back(v);
+            new_adj[v].push_back(u);
+        }
+    }
+    int64_t flow = 0;
+    while (true)
+    {
+        vector<int> parent(n);
+        int64_t new_flow = bfs(new_adj, n, capacity, s, t, parent); // O(V+E)
+        if (new_flow == 0)
+        {
+            break;
+        }
+        flow += new_flow;
+        // O(V)
+        for (int cur = t; cur != s; cur = parent[cur])
+        {
+            int prev = parent[cur];
+            capacity[prev][cur] -= new_flow;
+            capacity[cur][prev] += new_flow;
+        }
+    }
+    return flow;
+}
+// O(V)
+int isEdge(vector<pair<int, int64_t>> adj[], int u, int v)
+{
+    for (int i = 0; i < adj[u].size(); i++)
+    {
+        if (adj[u][i].first == v)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+int isParallelEdge(vector<pair<int, int64_t>> adj[], int u, int v, int n)
+{
+    for (int i = 0; i < adj[u].size(); i++)
+    {
+        if (adj[u][i].first >= n)
+        {
+            int k = adj[u][i].first;
+            if (adj[k].front().first == v)
+            {
+                return i;
+            }
+        }
+    }
+    return -1;
+}
+int main()
+{
+    int n, m;
+    cin >> n >> m;
+    int extra = 0;
+    vector<pair<int, int64_t>> adj[n + m / 2];
+    // O(VE)
+    for (int i = 0; i < m; i++)
+    {
+        int64_t u, v, w;
+        cin >> u >> v >> w;
+        u--;
+        v--;
+        if (isEdge(adj, u, v) != -1)
+        {
+            int j = isEdge(adj, u, v);
+            adj[u][j].second += w;
+            if (isParallelEdge(adj, v, u, n) != -1)
+            {
+                int k = isParallelEdge(adj, v, u, n);
+                adj[v][k].second += w;
+                adj[adj[v][k].first].front().second += w;
+            }
+        }
+        else if (isParallelEdge(adj, u, v, n) != -1)
+        {
+            int k = isParallelEdge(adj, u, v, n);
+            adj[u][k].second += w;
+            adj[adj[v][k].first].front().second += w;
+        }
+        else if (isEdge(adj, v, u) != -1)
+        {
+            // cout << "3" << endl;
+            adj[u].push_back({n + extra, w});
+            adj[n + extra].push_back({v, w});
+            extra++;
+        }
+        else
+        {
+            adj[u].push_back({v, w});
+        }
+    }
+    cout << fordFulkerson(adj, n + extra, 0, n - 1) << endl;
+}

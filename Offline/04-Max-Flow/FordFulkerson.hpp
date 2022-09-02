@@ -4,7 +4,7 @@
 #include <queue>
 using namespace std;
 
-// O(V+E)
+// O(V+E) = O(E)
 int bfs(vector<int> adj[], int n, vector<vector<int>> capacity, int s, int t, vector<int> &parent)
 {
     fill(parent.begin(), parent.end(), -1);
@@ -67,6 +67,12 @@ int fordFulkerson(vector<pair<int, int>> adj[], int n, int s, int t, vector<bool
     }
     int flow = 0;
 
+    // Each edge can be critical edge maximum V/2 times.
+    // There are E edges
+    // In total there can be at most V/2 * E critical edges
+    // Every aumenting path has at least one critical edge
+    // Number of augmenting path <= VE
+    // Will iterate O(VE) times
     while (true)
     {
         vector<int> parent(n);

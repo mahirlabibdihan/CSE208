@@ -60,6 +60,10 @@ void solve()
     cout << "\nMatrix Multiplication:" << endl;
     printMatrix(dist, n, n);
 
+    matrixMultiplicationFaster(adj, n, dist, parent);
+    cout << "\nMatrix Multiplication Faster:" << endl;
+    printMatrix(dist, n, n);
+
     /*int s, d;
     cin >> s >> d;
     printPath(parent[s][d], parent[s]);
